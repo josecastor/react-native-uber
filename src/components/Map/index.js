@@ -4,7 +4,10 @@ import MapView, { Marker } from 'react-native-maps'
 
 import Search from '../Search'
 import Directions from '../Directions'
+
 import markerImage from '../../assets/marker.png'
+
+import { LocationBox, LocationText } from './styles'
 
 import { getPixelSize } from '../../utils'
 
@@ -77,7 +80,12 @@ export default class Map extends Component {
 
                         }}
                         />
-                        <Marker coordinate={destination} anchor={{ x: 0, y: 0 }} image={markerImage} />
+                        <Marker coordinate={destination} anchor={{ x: 0, y: 0 }} image={markerImage} 
+                        >
+                            <LocationBox>
+                                <LocationText>{destination.title}</LocationText>
+                            </LocationBox>
+                        </Marker>
                     </Fragment>
 
                 )}

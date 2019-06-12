@@ -15,7 +15,8 @@ export default class Map extends Component {
     
     state = {
         region: null,
-        destination: null
+        destination: null,
+        duration: null
     }
     
     async componentDidMount() {
@@ -52,7 +53,7 @@ export default class Map extends Component {
     }
     
     render() {
-        const { region, destination } = this.state;
+        const { region, destination, duration } = this.state;
 
         return (
             <View style={{ flex: 1 }}>
@@ -69,6 +70,7 @@ export default class Map extends Component {
                         origin={region}
                         destination={destination}
                         onReady={result => {
+                            this.setState({ duration: Math.floor(result.duration) })
                             this.mapView.fitToCoordinates(result.coordinates, {
                                 edgePadding: {
                                     right: getPixelSize(50),
@@ -86,9 +88,11 @@ export default class Map extends Component {
                             anchor={{ x: 0, y: 0 }}
                         >
                             <LocationBox>
-                                <LocationTimeText>teste</LocationTimeText>
-                                <LocationTimeBox>31</LocationTimeBox>
-                                <LocationTimeTextSmall>MIN</LocationTimeTextSmall>
+                                <LocationTimeBox>
+                                    <LocationTimeText>{duration}</LocationTimeText>
+                                    <LocationTimeTextSmall>MIN</LocationTimeTextSmall>
+                                </LocationTimeBox>
+                                <LocationText>TESTE</LocationText>
                             </LocationBox>
                         </Marker>
 

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { View } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
+import Geocoder from 'react-native-geocoding'
 
 import Search from '../Search'
 import Directions from '../Directions'
@@ -11,24 +12,32 @@ import { LocationBox, LocationText, LocationTimeBox, LocationTimeTextSmall, Loca
 
 import { getPixelSize } from '../../utils'
 
+Geocoder.init('AIzaSyBvuIhN3kpV1TXCaaQDO_zXAiQmA3kt_9M');
+
 export default class Map extends Component {
     
     state = {
         region: null,
         destination: null,
-        duration: null
+        duration: null,
+        location: null
     }
     
     async componentDidMount() {
         navigator.geolocation.getCurrentPosition(
-            ({ coords: { latitude, longitude } }) => {
+            async ({ coords: { latitude, longitude } }) => {
+                const response = await Geocoder.from({ latitude, longitude });
+                const address = response.results[0].formatted_address;
+                const location = address.substring(0, address.indexOf(','));
+
                 this.setState({ 
                     region: { 
                         latitude,
                         longitude, 
                         latitudeDelta: 0.0143, 
                         longitudeDelta: 0.0134
-                    } 
+                    },
+                    location
                 })
             }, //sucesso
             () => {}, // erro
@@ -53,7 +62,7 @@ export default class Map extends Component {
     }
     
     render() {
-        const { region, destination, duration } = this.state;
+        const { region, destination, duration, location } = this.state;
 
         return (
             <View style={{ flex: 1 }}>
@@ -92,7 +101,7 @@ export default class Map extends Component {
                                     <LocationTimeText>{duration}</LocationTimeText>
                                     <LocationTimeTextSmall>MIN</LocationTimeTextSmall>
                                 </LocationTimeBox>
-                                <LocationText>TESTE</LocationText>
+                                <LocationText>{location}</LocationText>
                             </LocationBox>
                         </Marker>
 

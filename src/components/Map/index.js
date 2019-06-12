@@ -1,9 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { View } from 'react-native'
-import MapView from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps'
 
 import Search from '../Search'
 import Directions from '../Directions'
+import markerImage from '../../assets/marker.png'
+
 import { getPixelSize } from '../../utils'
 
 export default class Map extends Component {
@@ -59,21 +61,25 @@ export default class Map extends Component {
                     ref={el => (this.mapView = el)}
                 >
                 { destination && (
-                    <Directions
-                    origin={region}
-                    destination={destination}
-                    onReady={result => {
-                        this.mapView.fitToCoordinates(result.coordinates, {
-                            edgePadding: {
-                                right: getPixelSize(50),
-                                left: getPixelSize(50),
-                                top: getPixelSize(50),
-                                bottom: getPixelSize(50)
-                            }
-                        })
+                    <Fragment>
+                        <Directions
+                        origin={region}
+                        destination={destination}
+                        onReady={result => {
+                            this.mapView.fitToCoordinates(result.coordinates, {
+                                edgePadding: {
+                                    right: getPixelSize(50),
+                                    left: getPixelSize(50),
+                                    top: getPixelSize(50),
+                                    bottom: getPixelSize(50)
+                                }
+                            })
 
-                    }}
-                    />
+                        }}
+                        />
+                        <Marker coordinate={destination} anchor={{ x: 0, y: 0 }} image={markerImage} />
+                    </Fragment>
+
                 )}
                 </MapView>
                 <Search onLocationSelected={this.handleLocationSelected} />

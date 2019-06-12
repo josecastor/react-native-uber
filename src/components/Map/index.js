@@ -14,7 +14,9 @@ import { LocationBox, LocationText, LocationTimeBox, LocationTimeTextSmall, Loca
 
 import { getPixelSize } from '../../utils'
 
-Geocoder.init('AIzaSyBvuIhN3kpV1TXCaaQDO_zXAiQmA3kt_9M');
+import { KEY_GOOGLE } from 'react-native-dotenv'
+
+Geocoder.init(KEY_GOOGLE);
 
 export default class Map extends Component {
     
